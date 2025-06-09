@@ -1,10 +1,12 @@
+import LoginForm from '@/app/components/auth/LoginForm';
+import Container from '@/app/components/layout/Container';
 import React from 'react';
 
 const LoginPage = () => {
   return (
-    <>
-       Login Page
-    </>
+    <Container>
+      <LoginForm/>
+   </Container>
   );
 };
 

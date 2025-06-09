@@ -6,6 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 import SearchInput from "../SearchInput";
 import Notification from "../Notification";
 import UserButton from "@/app/components/UserButton"
+import Link from "next/link";
 
 
 
@@ -14,22 +15,27 @@ const NavBar = () => {
 
     <Container>
 
-    <nav className=" sticky top-0 border-b z-50 bg-white dark:bg-slate-950 py-2">
-      <div  className="flex justify-between items-center gap-8">
-      <div className="flex items-center gap-1 cursor-pointer">
-         <MdNoteAlt size={24}/>
-        <div className="font-bold text-xl">Bug To Blog</div>
-        </div>
-       <SearchInput/>
-      <div className="flex items-center gap-5 sm:gap-8 ">
-          
-          <ThemeToggle/>
-       <Notification/>
+      <nav className=" sticky top-0 border-b z-50 bg-white dark:bg-slate-950 py-2">
+        <div className="flex justify-between items-center gap-8">
+          <div className="flex items-center gap-1 cursor-pointer">
+            <MdNoteAlt size={24} />
+            <div className="font-bold text-xl">Bug To Blog</div>
+          </div>
+          <SearchInput />
+          <div className="flex items-center gap-5 sm:gap-8 ">
+
+            <ThemeToggle />
+            <Notification />
             <UserButton />
-            
-      </div>
-     </div>
-   </nav>
+            <>
+            <Link href="/login">Login</Link>
+            <Link href="/register">Register</Link>
+            </>   
+
+
+          </div>
+        </div>
+      </nav>
     </Container>
   );
 };
