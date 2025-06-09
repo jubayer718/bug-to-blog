@@ -1,21 +1,31 @@
 
 
+import Container from "./Container";
+import ThemeToggle from "./ThemeToggle";
+
+
 const NavBar = () => {
   return (
-    <nav className=" sticky top-0 border-b z-50 bg-white">
+
+    <Container>
+
+    <nav className=" sticky top-0 border-b z-50 bg-white dark:bg-slate-950">
       <div  className="flex justify-between items-center gap-8">
-      <div>
+      <div className="flex items-center gap-1 cursor-pointer">
         <div>Icon</div>
         <div>Bug To Blog</div>
         </div>
         <div>Search</div>
-      <div>
-        <div>theme</div>
+      <div className="flex items-center gap-5 sm:gap-8 ">
+            <div>
+          <ThemeToggle/>
+        </div>
         <div>Notification</div>
         <div>UserMenu</div>
       </div>
      </div>
    </nav>
+    </Container>
   );
 };
 

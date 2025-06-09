@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "../../lib/utils";
 // components
 import NavBar from "./components/layout/NavBar";
+import { ThemeProvider } from "next-themes";
 
 
 const poppins = Poppins({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={cn("antialiased flex flex-col min-h-screen px-2",poppins.variable)}
       >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 
        <NavBar/>
         <main className="flex-grow">
@@ -37,6 +39,8 @@ export default function RootLayout({
           
        </main>
         <footer>...</footer>
+        </ThemeProvider>
+
       </body>
     </html>
   );
