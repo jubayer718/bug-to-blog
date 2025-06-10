@@ -6,7 +6,7 @@ export const RegisterSchema = z.object({
     .max(30, { message: 'name must be 30 or fewer characters long' }),
   email: z.string().email(),
   password: z.string().min(6, { message: "password must be 6 or more characters long!" }),
-  confirmPassword:z.string(),
+  confirmPassword: z.string(),
   
 }).refine(
   (values) => {

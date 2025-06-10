@@ -11,7 +11,12 @@ const RegisterForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(RegisterSchema) })
   
   const onsubmit :SubmitHandler<RegisterSchemaType> = (data) => {
-    console.log('data >>>',data)
+    const userInfo = {
+      name: data.name,
+      email: data.email,
+      role: 'user',
+    }
+   console.log(userInfo);
   }
   return (
     <form onSubmit={handleSubmit(onsubmit)} className="flex flex-col max-w-[500px] m-auto mt-8 gap-2" >
@@ -42,7 +47,7 @@ const RegisterForm = () => {
         placeholder="confirmPassword"
         type="password"
       />
-      <Button type="submit" label="Login" />
+      <Button type="submit" label="Register" />
       <div className="flex items-center justify-center my-2">or</div>
       <SocialAuth/>
    </form>
