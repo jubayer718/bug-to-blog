@@ -9,10 +9,13 @@ import SocialAuth from "./SocialAuth";
 import axios from 'axios';
 import { RegisterSchema, RegisterSchemaType } from "../../../../schemas/RegisterSchema";
 import toast from "react-hot-toast";
+import { useAddDataMutation } from "@/app/store/apiSlice";
 
 
 const RegisterForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(RegisterSchema) })
+
+  const [addData, { isLoading, isError, error }] = useAddDataMutation();
   
   const onsubmit :SubmitHandler<RegisterSchemaType> = async(data) => {
     const userInfo = {
@@ -20,11 +23,17 @@ const RegisterForm = () => {
       email: data.email,
       role: 'user',
     }
-   console.log(userInfo);
     try {
-      const { data: responseData } = await axios.post('/api/data', userInfo);
-      if (responseData.insertedId) {
-        toast.success("User Create successful")
+
+      const response = await addData(userInfo).unwrap();
+     
+      // const { data: responseData } = await axios.post('/api/data', userInfo);
+   
+      if (response.insertedId) {
+        toast.success("User Create successful");
+      } 
+      else {
+        toast.success(response.message)
       }
       
       // console.log("server response", responseData);
