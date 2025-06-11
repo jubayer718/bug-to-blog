@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "../../lib/utils";
+import {Toaster} from 'react-hot-toast'
 // components
 import NavBar from "./components/layout/NavBar";
 import { ThemeProvider } from "next-themes";
@@ -31,6 +32,8 @@ export default function RootLayout({
       <body
         className={cn("antialiased flex flex-col min-h-screen px-2",poppins.variable)}
       >
+
+        <Toaster/>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 
        <NavBar/>

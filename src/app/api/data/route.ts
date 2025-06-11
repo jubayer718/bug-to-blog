@@ -1,14 +1,18 @@
 // app/api/data/route.ts
+import { connectToDatabase } from "@/lib/mongo_db";
 import { NextRequest, NextResponse } from "next/server";
-import clientPromise from "@/lib/mongo_db";
+
 
 export async function POST(req: NextRequest) {
   try {
-    const client = await clientPromise;
-    const db = client.db("yourDatabaseName");
+    const db = await connectToDatabase();
     const body = await req.json();
-
-    const result = await db.collection("yourCollection").insertOne(body);
+    const email = body.email;
+    const isUserExist = await db.collection("Users").findOne({ email: email });
+    if (isUserExist) {
+      return NextResponse.json({message:'User all ready exist'})
+    }
+    const result = await db.collection("Users").insertOne(body);
 
     return NextResponse.json({ success: true, insertedId: result.insertedId });
   } catch (error) {

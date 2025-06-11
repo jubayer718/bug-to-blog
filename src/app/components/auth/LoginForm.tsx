@@ -7,11 +7,13 @@ import FormField from "../common/FormField";
 import Button from "../common/Button";
 import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
+
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(LoginSchema) })
   
-  const onsubmit :SubmitHandler<LoginSchemaType> = (data) => {
-    console.log('data >>>',data)
+  const onsubmit :SubmitHandler<LoginSchemaType> = async(data) => {
+    console.log('data >>>', data)
+  
   }
   return (
     <form onSubmit={handleSubmit(onsubmit)} className="flex flex-col max-w-[500px] m-auto mt-8 gap-2" >
