@@ -1,11 +1,11 @@
 // app/api/data/route.ts
-import { connectToDatabase } from "@/lib/mongo_db";
+import client from "@/lib/mongo_db";
 import { NextRequest, NextResponse } from "next/server";
 
 
 export async function POST(req: NextRequest) {
   try {
-    const db = await connectToDatabase();
+    const db = client.db(process.env.MONGODB_DB);
     const body = await req.json();
     const email = body.email;
     const isUserExist = await db.collection("Users").findOne({ email: email });

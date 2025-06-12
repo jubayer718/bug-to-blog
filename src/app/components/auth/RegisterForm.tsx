@@ -6,16 +6,19 @@ import FormField from "../common/FormField";
 import Button from "../common/Button";
 import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
-import axios from 'axios';
+// import axios from 'axios';
 import { RegisterSchema, RegisterSchemaType } from "../../../../schemas/RegisterSchema";
 import toast from "react-hot-toast";
 import { useAddDataMutation } from "@/app/store/apiSlice";
 
 
+
+// const [addData, { isLoading, isError, error }] = useAddDataMutation();
+
 const RegisterForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(RegisterSchema) })
 
-  const [addData, { isLoading, isError, error }] = useAddDataMutation();
+  const [addData,{isLoading}] = useAddDataMutation();
   
   const onsubmit :SubmitHandler<RegisterSchemaType> = async(data) => {
     const userInfo = {
@@ -73,7 +76,7 @@ const RegisterForm = () => {
         placeholder="confirmPassword"
         type="password"
       />
-      <Button type="submit" label="Register" />
+      <Button type="submit" label={isLoading ? 'Submitting...' : "Register"} disabled={isLoading} />
       <div className="flex items-center justify-center my-2">or</div>
       <SocialAuth/>
    </form>
