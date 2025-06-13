@@ -1,5 +1,6 @@
 // app/api/data/route.ts
-import client from "@/lib/mongo_db";
+
+import client from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 

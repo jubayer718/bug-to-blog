@@ -10,6 +10,7 @@ import SocialAuth from "./SocialAuth";
 import { RegisterSchema, RegisterSchemaType } from "../../../../schemas/RegisterSchema";
 import toast from "react-hot-toast";
 import { useAddDataMutation } from "@/app/store/apiSlice";
+import bcrypt from 'bcryptjs';
 
 
 
@@ -18,12 +19,19 @@ import { useAddDataMutation } from "@/app/store/apiSlice";
 const RegisterForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(RegisterSchema) })
 
+
+
   const [addData,{isLoading}] = useAddDataMutation();
   
-  const onsubmit :SubmitHandler<RegisterSchemaType> = async(data) => {
+  const onsubmit: SubmitHandler<RegisterSchemaType> = async (data) => {
+    const plainPassword = data.password;
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+  
+  
     const userInfo = {
       name: data.name,
       email: data.email,
+      password:hashedPassword,
       role: 'user',
     }
     try {
@@ -43,7 +51,9 @@ const RegisterForm = () => {
      
 
     } catch (e) {
+     
       const error = e as Error;
+      console.log(error);
       toast.error(error.message)
     }
   }
