@@ -1,9 +1,10 @@
-
+"use client"
 
 import { Bookmark, LogOut, Pencil, Shield, User, UserRound } from 'lucide-react';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import {signOut} from 'next-auth/react'
 
 const UserButton = () => {
   return (
@@ -47,7 +48,7 @@ const UserButton = () => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <button className='flex items-center gap-2'>
+            <button onClick={()=>signOut()} className='flex items-center gap-2'>
               <LogOut size={18} />
           Logout
             </button>
