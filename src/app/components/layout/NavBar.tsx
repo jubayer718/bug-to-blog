@@ -24,8 +24,8 @@ const NavBar = () => {
       }
       updateSession();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[path,isLoggedIn])
+
+  },[path,session,isLoggedIn])
 
  
   return (
