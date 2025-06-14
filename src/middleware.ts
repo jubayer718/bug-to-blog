@@ -1,37 +1,34 @@
 import NextAuth from "next-auth"
-import authConfig from "./auth.config"
+
 import { apiAuthPrefix, authRoutes, LOGIN_REDIRECT, publicRoute } from "./routes";
+import authConfig from "./auth.config";
  
-const { auth: middleware } = NextAuth(authConfig)
+ const { auth: middleware } = NextAuth(authConfig)
 
 export default middleware((req) => {
-  const { nextUrl } = req;
+  const { nextUrl} = req;
   const isLoggedIn = !!req.auth;
   console.log("pathname>>>", nextUrl.pathname, isLoggedIn);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isPublicRoute = publicRoute.includes(nextUrl.pathname);
-
+  const isAutRoute = authRoutes.includes(nextUrl.pathname);
+  
   if (isApiAuthRoute) {
-    return;
+    return
   }
-
-  if (isAuthRoute) {
+  if (isAutRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(LOGIN_REDIRECT, nextUrl))
+      return Response.redirect(new URL(LOGIN_REDIRECT,nextUrl))
     }
-    return;
+    return
   }
-
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/login", nextUrl));
+    return Response.redirect(new URL("/login",nextUrl))
   }
-
 
   return;
-
-})  
+})
 
 export const config = {
   matcher: [

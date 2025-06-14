@@ -6,57 +6,45 @@ import FormField from "../common/FormField";
 import Button from "../common/Button";
 import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
-// import axios from 'axios';
 import { RegisterSchema, RegisterSchemaType } from "../../../../schemas/RegisterSchema";
-import toast from "react-hot-toast";
-import { useAddDataMutation } from "@/app/store/apiSlice";
-import bcrypt from 'bcryptjs';
+import { signUp } from "@/action/auth/register";
+import { useState, useTransition } from "react";
+import { Alert } from "../common/Alert";
 
 
 
 // const [addData, { isLoading, isError, error }] = useAddDataMutation();
 
 const RegisterForm = () => {
+
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>('')
+  const [success, setSuccess] = useState<string | undefined>('')
+  
+
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(RegisterSchema) })
 
 
 
-  const [addData,{isLoading}] = useAddDataMutation();
+  // const [addData,{isLoading}] = useAddDataMutation();
   
-  const onsubmit: SubmitHandler<RegisterSchemaType> = async (data) => {
-    const plainPassword = data.password;
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
-  
-  
-    const userInfo = {
-      name: data.name,
-      email: data.email,
-      password:hashedPassword,
-      role: 'user',
-    }
-    try {
+  const onsubmit: SubmitHandler<RegisterSchemaType> =
+  async (data) => {
 
-      const response = await addData(userInfo).unwrap();
-     
-      // const { data: responseData } = await axios.post('/api/data', userInfo);
-   
-      if (response.insertedId) {
-        toast.success("User Create successful");
-      } 
-      else {
-        toast.success(response.message)
-      }
+
+    setSuccess("")
+    setError("")
+    startTransition(() => {
       
-      // console.log("server response", responseData);
-     
+      signUp(data).then((res) => {
+        setSuccess(res.success)
+        setError(res.error)
+      })
+    })
 
-    } catch (e) {
-     
-      const error = e as Error;
-      console.log(error);
-      toast.error(error.message)
-    }
   }
+
+
   return (
     <form onSubmit={handleSubmit(onsubmit)} className="flex flex-col max-w-[500px] m-auto mt-8 gap-2" >
       <Heading title="Create account to Bug To Blog" md center/>
@@ -65,12 +53,14 @@ const RegisterForm = () => {
         register={register}
         errors={errors}
         placeholder="name"
+        disabled={isPending}
       />
       <FormField
         id="email"
         register={register}
         errors={errors}
         placeholder="email"
+        disabled={isPending}
       />
       <FormField
         id="password"
@@ -78,6 +68,7 @@ const RegisterForm = () => {
         errors={errors}
         placeholder="password"
         type="password"
+        disabled={isPending}
       />
       <FormField
         id="confirmPassword"
@@ -85,8 +76,13 @@ const RegisterForm = () => {
         errors={errors}
         placeholder="confirmPassword"
         type="password"
+        disabled={isPending}
       />
-      <Button type="submit" label={isLoading ? 'Submitting...' : "Register"} disabled={isLoading} />
+      <div>
+        {error && <Alert message={error } error/>}
+        {success && <Alert message={ success} success />}
+      </div>
+      <Button type="submit" label={isPending?"Submitting...": "Register"} disabled={isPending} />
       <div className="flex items-center justify-center my-2">or</div>
       <SocialAuth/>
    </form>

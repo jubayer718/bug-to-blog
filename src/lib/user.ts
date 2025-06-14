@@ -1,16 +1,14 @@
-import client from "./mongodb";
+import { db } from "./db";
 
- type User = {
-  _id: string;
-  email: string;
-  password: string;
-  name?: string;
+export async function getUserByEmail(email: string) {
+  try {
+    const user = await db.user.findUnique({
+      where:{email:email} 
+    })
+    return user
   
-};
-
-export const getUserByEmail = async(email: string):Promise<User|null>=>{
-  const db =  client.db(process.env.MONGODB_DB);
-   
-  const user = await db.collection("Users").findOne({ email }) as User | null  ;
-  return user;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return null;
+  }
 }
