@@ -9,6 +9,7 @@ import NavBar from "./components/layout/NavBar";
 import { ThemeProvider } from "next-themes";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 
 const poppins = Poppins({
@@ -33,6 +34,7 @@ export default async function RootLayout({
   const session = await auth();
   
   return (
+    <EdgeStoreProvider>
     <SessionProvider session={session}>
       <html lang="en">
       <body
@@ -49,6 +51,7 @@ export default async function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-    </SessionProvider>
+      </SessionProvider>
+      </EdgeStoreProvider>
   );
 }
