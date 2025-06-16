@@ -17,6 +17,7 @@ const LoginForm = () => {
   const searchParams= useSearchParams()
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(LoginSchema) })
   const router = useRouter();
   const urlError = searchParams.get('error') === "OAuthAccountNotLinked" ? "Email in use with different provider!" : "";
@@ -33,6 +34,9 @@ const LoginForm = () => {
         }
         if (!res?.error) {
           router.push(LOGIN_REDIRECT)
+        }
+        if (res?.success) {
+          setSuccess(res.success)
         }
       })
     })
@@ -56,6 +60,7 @@ const LoginForm = () => {
         disabled={isPending}
       />
        {error && <Alert message={error } error/>}
+       {success && <Alert message={success } success/>}
       <Button type="submit" label={isPending?"Submitting..":"Login"} disabled={ isPending} />
       <div className="flex items-center justify-center my-2">or</div>
        {urlError && <Alert message={urlError} error/>}

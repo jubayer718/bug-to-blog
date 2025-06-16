@@ -4,15 +4,18 @@ import { Bookmark, LogOut, Pencil, Shield, User, UserRound } from 'lucide-react'
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import {signOut} from 'next-auth/react'
+import {signOut, useSession} from 'next-auth/react'
 
 const UserButton = () => {
+
+  const session = useSession();
+  const imgUrl = session.data?.user.image || "";
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src=""/>
+            <AvatarImage src={imgUrl} />
             <AvatarFallback className='border-2 border-slate-500 dark:border-slate-50'>
               <UserRound/>
             </AvatarFallback>

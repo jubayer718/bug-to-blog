@@ -27,7 +27,7 @@ const EmailVerificationClient = () => {
 
   },[token])
   return (
-    <div>
+    <div className=" border-2 rounded-md p-2 flex flex-col gap-2 items-center my-8 max-w[400px] mx-auto">
       <Heading title="Bug To Blog" center />
       {loading && <div>Verifying Email...</div>}
       {error && <Alert message={ error} error/>}
