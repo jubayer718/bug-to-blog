@@ -3,7 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 import { LoginSchema } from '../schemas/LoginSchema'
 import { getUserByEmail } from './lib/user';
 import bcryptJs from 'bcryptjs';
-// import Google from 'next-auth/providers/google';
+import Google from 'next-auth/providers/google';
 import Github from 'next-auth/providers/github';
 
 export default {
@@ -11,6 +11,10 @@ export default {
     Github({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret:process.env.GITHUB_CLIENT_SECRET, 
+    }),
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret:process.env.GOOGLE_CLIENT_SECRET, 
     }),
     Credentials({
 

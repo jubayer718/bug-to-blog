@@ -8,7 +8,7 @@ import authConfig from "./auth.config";
 export default middleware((req) => {
   const { nextUrl} = req;
   const isLoggedIn = !!req.auth;
-  console.log("pathname>>>", nextUrl.pathname, isLoggedIn);
+  // console.log("pathname>>>", nextUrl.pathname, isLoggedIn);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoute.includes(nextUrl.pathname);

@@ -15,7 +15,7 @@ const SocialAuth = () => {
   return (
     <div className="flex items-center justify-center  my-2 gap-4 ">
       <Button type="button" label="Continue with github" className="flex items-center gap-2 justify-center" outlined icon={FaGithub} onclick={()=>handleOnclick('github')} />
-      <Button type="button" label="Continue with Google" className="flex items-center gap-2  justify-center" outlined icon={FaGoogle}/>
+      <Button type="button" label="Continue with Google" className="flex items-center gap-2  justify-center" outlined icon={FaGoogle} onclick={()=>handleOnclick("google")}/>
     </div>
   );
 };
