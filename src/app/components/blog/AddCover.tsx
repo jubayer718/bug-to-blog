@@ -39,7 +39,7 @@ const AddCover = ({ setUploadCover, replaceUrl }: AddCoverProps) => {
     return () => {
       isMounted=false
     }
-  },[file , edgestore,replaceUrl,setUploadCover])
+  },[file])
  
   const handleButtonClicked = () => imgInputRef.current?.click();
  

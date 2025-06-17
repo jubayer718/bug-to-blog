@@ -7,12 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "../common/FormField";
 import AddCover from "./AddCover";
 import { useState } from "react";
+import CoverImage from "./CoverImage";
 
 const CreateBlogForm = () => {
   const session = useSession();
   const userId = session.data?.user.userId;
   const [uploadedCover, setUploadCover] = useState<string>();
-  console.log(uploadedCover);
+  // console.log(uploadedCover);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<BlogSchemaType>({
     resolver: zodResolver(BlogSchema),
@@ -26,7 +27,9 @@ const CreateBlogForm = () => {
 
 
     <div>
-      <AddCover setUploadCover={setUploadCover}/>
+      {!!uploadedCover && <CoverImage url={uploadedCover} isEditor={true} setUploadCover={setUploadCover} />}
+      {!uploadedCover &&   <AddCover setUploadCover={setUploadCover}/>}
+    
       <FormField
         id="title"
         register={register}
