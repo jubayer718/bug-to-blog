@@ -25,7 +25,7 @@ const CoverImage = ({url,isEditor,setUploadCover}:CoverImageProps) => {
       <Image src={url} fill  alt="Cover Image" className="object-cover"/>
       {isEditor && <div className="absolute top-8 right-5 opacity-0 group-hover:opacity-100 flex items-center gap-x-2">
         <AddCover setUploadCover={setUploadCover} replaceUrl={url} />
-        <button onClick={()=>handleRemoveCover(url)} className="flex items-center gap-2 ml-4" type="button" >
+        <button onClick={()=>handleRemoveCover(url)} className="flex items-center gap-2 ml-4 bg-slate-500 opacity-75 p-4 rounded-lg" type="button" >
           <X size={20} />
           <span>
             Remove

@@ -12,6 +12,9 @@
   "dependencies": {
     "@auth/mongodb-adapter": "^3.9.1",
     "@auth/prisma-adapter": "^2.9.1",
+    "@blocknote/core": "^0.31.2",
+    "@blocknote/mantine": "^0.31.2",
+    "@blocknote/react": "^0.31.2",
     "@edgestore/react": "^0.5.2",
     "@edgestore/server": "^0.5.2",
     "@hookform/resolvers": "^5.1.1",

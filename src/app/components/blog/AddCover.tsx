@@ -44,14 +44,14 @@ const AddCover = ({ setUploadCover, replaceUrl }: AddCoverProps) => {
   const handleButtonClicked = () => imgInputRef.current?.click();
  
   return (
-    <div>
+    <div className="">
       <input type="file"
         accept="image/*"
         onChange={(e) => setFile(e.target.files?.[0] || null)}
         ref={imgInputRef}
         className="hidden"
       />
-      <button type="button" onClick={handleButtonClicked} className="flex items-center gap-2 ">
+      <button type="button" onClick={handleButtonClicked} className="flex items-center gap-2  bg-slate-500 p-4 rounded-lg opacity-75 ">
         <ImageIcon size={20} />  
         <span>
           {!!replaceUrl ? "Change Cover": "Add Cover"}
