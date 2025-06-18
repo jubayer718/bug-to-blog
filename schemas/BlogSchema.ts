@@ -9,6 +9,7 @@ export const BlogSchema = z.object({
     .max(150, { message: "title is too long" }),
   content: z.string().optional(),
   isPublished: z.boolean(),
+  coverImage: z.string(),
   tags: z.array(z.string()),
 })
 

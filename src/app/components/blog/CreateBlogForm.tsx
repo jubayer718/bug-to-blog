@@ -1,21 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { BlogSchema, BlogSchemaType } from "../../../../schemas/BlogSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "../common/FormField";
 import AddCover from "./AddCover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CoverImage from "./CoverImage";
 import { tags } from "@/lib/tags";
 import BlockNoteEditor from "./editor/BlockNoteEditor";
+import Button from "../common/Button";
+import { Alert } from "../common/Alert";
+
 
 const CreateBlogForm = () => {
   const session = useSession();
   const userId = session.data?.user.userId;
   const [uploadedCover, setUploadCover] = useState<string>();
   const [content, setContent] = useState<string | undefined>();
+  const [error, setError] = useState<string|undefined>();
+  const [success, setSuccess] = useState<string|undefined>();
 
 
   // console.log(uploadedCover);
@@ -28,10 +34,40 @@ const CreateBlogForm = () => {
     }
   })
 
+
+  useEffect(() => {
+    if (uploadedCover) {
+      setValue('coverImage', uploadedCover, {
+        shouldValidate: true,
+        shouldTouch: true,
+        shouldDirty:true
+      })
+    }
+  }, [uploadedCover])
+  
+  useEffect(() => {
+    if (typeof content === "string") {
+      setValue('content', content, {
+        shouldValidate: true,
+        shouldTouch: true,
+        shouldDirty:true
+      })
+    }
+  }, [content])
+  
   const onChange = (content: string)=>{
     setContent(content)
   }
-  return (<form >
+
+
+  const onPublish: SubmitHandler<BlogSchemaType> = (data) =>{
+   console.log("data>>>", data);
+    
+  }
+  console.log("errors>>>", errors)
+
+
+  return (<form onSubmit={handleSubmit(onPublish)} className="flex flex-col justify-between max-w-[1200px] m-auto min-h[85vh]">
 
 
 
@@ -68,10 +104,24 @@ const CreateBlogForm = () => {
                 </label>
               )
             })
-         }npm
+         }
         </div>
+        {errors.tags && errors.tags.message && <span className="text-sm text-red-500">Select atleast one tag, max of 4!</span>}
       </fieldset>
-      <BlockNoteEditor onChange={onChange}/>
+      <BlockNoteEditor onChange={onChange} />
+      {errors.content && errors.content.message && <span className="text-sm text-red-500">{ errors.content.message}</span>}
+    </div>
+    <div className="border-t pt-2">
+      {errors.userId && errors.userId.message && <span className=" text-sm text-red-500 ">Missing a userId</span>}
+      {success && <Alert message={ success}  success/>}
+      {error && <Alert message={ error}  error/>}
+      <div className="flex items-center justify-between gap-6">
+      <div> <Button type="button" label="Delete"/></div>
+        <div className="flex items-center gap-4">
+          <Button type="submit" label="Publish" className="bg-blue-700"/>
+          <Button type="button" label="Save as Draft"/>
+      </div>
+      </div>
     </div>
   </form>
   );

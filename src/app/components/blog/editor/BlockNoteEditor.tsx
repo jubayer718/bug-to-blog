@@ -9,7 +9,7 @@ import { useEdgeStore } from "@/lib/edgestore";
 import '@blocknote/mantine/style.css';
 import './editor.css'
 interface BlockNoteEditorProps{
-  onChange?: (value:string)=>void
+  onChange?: (value:string) => void
   initialContent?: string
   editable?: boolean
 }
@@ -32,6 +32,7 @@ const BlockNoteEditor = ({ onChange, initialContent, editable }: BlockNoteEditor
       theme={resolvedTheme === "dark" ? "dark" : "light"}
       onChange={onChange ? () => { JSON.stringify(editor.document) } : () => { }}
       editable={editable}
+      
     />
   );
 };

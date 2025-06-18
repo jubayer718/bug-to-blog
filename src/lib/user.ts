@@ -12,3 +12,15 @@ export async function getUserByEmail(email: string ) {
     return null;
   }
 }
+export async function getUserById(id: string ) {
+  try {
+    const user = await db.user.findUnique({
+      where:{id:id} 
+    })
+    return user
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return null;
+  }
+}
