@@ -24,6 +24,7 @@ const CreateBlogForm = () => {
   const [success, setSuccess] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isPublishing, startPublishing] = useTransition();
+  const [isSavingAsDraft, startSavingAsDraft] = useTransition();
 
   // console.log(uploadedCover);
 
@@ -82,7 +83,27 @@ const CreateBlogForm = () => {
     })
 
   }
-  console.log("errors>>>", errors)
+
+  const onSaveAsDraft: SubmitHandler<BlogSchemaType> = (data) => {
+  
+    setSuccess('')
+    setError('')
+
+    
+    startSavingAsDraft(() => {
+      createBlog({ ...data, isPublished: false }).then(data => {
+        if (data.error) {
+          setError(data.error)
+        }
+
+        if (data.success) {
+          setSuccess(data.success)
+        }
+      })
+    })
+
+  }
+
 
 
   return (<form onSubmit={handleSubmit(onPublish)} className="flex flex-col justify-between max-w-[1200px] m-auto min-h[85vh]">
@@ -135,8 +156,9 @@ const CreateBlogForm = () => {
       <div className="flex items-center justify-between gap-6">
         <div> <Button type="button" label="Delete" /></div>
         <div className="flex items-center gap-4">
-          <Button type="submit" label="Publish" className="bg-blue-700" />
-          <Button type="button" label="Save as Draft" />
+          <Button type="submit" label={isPublishing ? "Publishing..." : "Publish"} className="bg-blue-700" />
+          
+          <Button type="button" label={isSavingAsDraft?"Saving...":"save as draft"}  onclick={handleSubmit(onSaveAsDraft)}/>
         </div>
       </div>
     </div>

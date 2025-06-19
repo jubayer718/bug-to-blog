@@ -5,9 +5,10 @@ import { Bookmark, LogOut, Pencil, Shield, User, UserRound } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {signOut, useSession} from 'next-auth/react'
+import { useRouter } from 'next/navigation';
 
 const UserButton = () => {
-
+  const router = useRouter();
   const session = useSession();
   const imgUrl = session.data?.user.image || "";
   return (
@@ -30,7 +31,7 @@ const UserButton = () => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <button className='flex items-center gap-2'>
+            <button onClick={()=>{router.push('/blog/create')}} className='flex items-center gap-2'>
               <Pencil size={18} />
            Create Post
             </button>
