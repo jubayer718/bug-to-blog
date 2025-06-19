@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 'use client'
 
 import { useSession } from "next-auth/react";
@@ -7,12 +7,13 @@ import { BlogSchema, BlogSchemaType } from "../../../../schemas/BlogSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "../common/FormField";
 import AddCover from "./AddCover";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import CoverImage from "./CoverImage";
 import { tags } from "@/lib/tags";
-import BlockNoteEditor from "./editor/BlockNoteEditor";
 import Button from "../common/Button";
 import { Alert } from "../common/Alert";
+import BlockNoteEditor from "./editor/BlockNoteEditor";
+import { createBlog } from "@/action/blogs/create-blog";
 
 
 const CreateBlogForm = () => {
@@ -20,9 +21,9 @@ const CreateBlogForm = () => {
   const userId = session.data?.user.userId;
   const [uploadedCover, setUploadCover] = useState<string>();
   const [content, setContent] = useState<string | undefined>();
-  const [error, setError] = useState<string|undefined>();
-  const [success, setSuccess] = useState<string|undefined>();
-
+  const [success, setSuccess] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
+  const [isPublishing, startPublishing] = useTransition();
 
   // console.log(uploadedCover);
 
@@ -30,7 +31,7 @@ const CreateBlogForm = () => {
     resolver: zodResolver(BlogSchema),
     defaultValues: {
       userId,
-      isPublished:false
+      isPublished: false
     }
   })
 
@@ -40,29 +41,46 @@ const CreateBlogForm = () => {
       setValue('coverImage', uploadedCover, {
         shouldValidate: true,
         shouldTouch: true,
-        shouldDirty:true
+        shouldDirty: true
       })
     }
   }, [uploadedCover])
-  
+
   useEffect(() => {
     if (typeof content === "string") {
       setValue('content', content, {
         shouldValidate: true,
         shouldTouch: true,
-        shouldDirty:true
+        shouldDirty: true
       })
     }
   }, [content])
-  
-  const onChange = (content: string)=>{
+
+  const onChange = (content: string) => {
+
     setContent(content)
   }
 
 
-  const onPublish: SubmitHandler<BlogSchemaType> = (data) =>{
-   console.log("data>>>", data);
-    
+  const onPublish: SubmitHandler<BlogSchemaType> = (data) => {
+    console.log("data>>>", data);
+    setSuccess('')
+    setError('')
+    if (data.tags.length > 4) {
+      return setError("Select only 4 tas!")
+    }
+    startPublishing(() => {
+      createBlog({ ...data, isPublished: true }).then(data => {
+        if (data.error) {
+          setError(data.error)
+        }
+
+        if (data.success) {
+          setSuccess(data.success)
+        }
+      })
+    })
+
   }
   console.log("errors>>>", errors)
 
@@ -73,8 +91,8 @@ const CreateBlogForm = () => {
 
     <div>
       {!!uploadedCover && <CoverImage url={uploadedCover} isEditor={true} setUploadCover={setUploadCover} />}
-      {!uploadedCover &&   <AddCover setUploadCover={setUploadCover}/>}
-    
+      {!uploadedCover && <AddCover setUploadCover={setUploadCover} />}
+
       <FormField
         id="title"
         register={register}
@@ -90,37 +108,36 @@ const CreateBlogForm = () => {
           {
             tags.map((tag) => {
               if (tag === "ALL") return null
-              
-              return (
-                <label key={tag} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={tag}
-                    {...register("tags")}
-                    disabled={false}
-                  />
-                  <span>{ tag}</span>
 
-                </label>
-              )
+              return <label key={tag} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  value={tag}
+                  {...register("tags")}
+                  disabled={false}
+                />
+                <span>{tag}</span>
+
+              </label>
+
             })
-         }
+          }
         </div>
         {errors.tags && errors.tags.message && <span className="text-sm text-red-500">Select atleast one tag, max of 4!</span>}
       </fieldset>
       <BlockNoteEditor onChange={onChange} />
-      {errors.content && errors.content.message && <span className="text-sm text-red-500">{ errors.content.message}</span>}
+      {errors.content && errors.content.message && <span className="text-sm text-red-500">{errors.content.message}</span>}
     </div>
     <div className="border-t pt-2">
       {errors.userId && errors.userId.message && <span className=" text-sm text-red-500 ">Missing a userId</span>}
-      {success && <Alert message={ success}  success/>}
-      {error && <Alert message={ error}  error/>}
+      {success && <Alert message={success} success />}
+      {error && <Alert message={error} error />}
       <div className="flex items-center justify-between gap-6">
-      <div> <Button type="button" label="Delete"/></div>
+        <div> <Button type="button" label="Delete" /></div>
         <div className="flex items-center gap-4">
-          <Button type="submit" label="Publish" className="bg-blue-700"/>
-          <Button type="button" label="Save as Draft"/>
-      </div>
+          <Button type="submit" label="Publish" className="bg-blue-700" />
+          <Button type="button" label="Save as Draft" />
+        </div>
       </div>
     </div>
   </form>

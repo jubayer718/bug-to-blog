@@ -7,5 +7,4 @@ export const tags = [
   "JAVASCRIPT",
   "REACT.JS",
   "NEXT.JS",
-  "WEB DEVELOPMENT"
 ]
