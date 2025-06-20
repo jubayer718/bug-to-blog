@@ -68,6 +68,13 @@ const CreateBlogForm = ({blog}:{blog?:Blog}) => {
     }
   }, [content])
 
+
+  useEffect(() => {
+    if (blog?.coverImage) {
+      setUploadCover(blog.coverImage)
+    }
+  },[blog?.coverImage])
+
   const onChange = (content: string) => {
 
     setContent(content)

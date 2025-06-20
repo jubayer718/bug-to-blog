@@ -7,4 +7,11 @@ export const tags = [
   "JAVASCRIPT",
   "REACT.JS",
   "NEXT.JS",
+  "REMIX",
+  "SVELT",
+  "PHP",
+  "ANGULAR",
+  "NODE.JS",
+  "REDUX",
+  "EXPRESS.JS"
 ]
