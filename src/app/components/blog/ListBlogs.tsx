@@ -1,5 +1,6 @@
 import { Blog, User } from "@prisma/client";
 import Link from "next/link";
+import BlogCards from "./BlogCards";
 
 export type BlogWithUser = Blog & {
   user: Pick<User, 'id' | 'name' | 'image'>
@@ -19,7 +20,7 @@ const ListBlogs = ({ blogs, hasMore, currentPage, isUserProfile }: ListBlogsProp
   return (<div className=" flex flex-col max-w-[800px] m-auto justify-between min-h-[85vh] px-4 pt-2">
 
     <section>
-      {blogs.map((blog) => <div key={ blog.id}>{ blog.title}</div>)}
+      {blogs.map((blog) => <BlogCards key={blog.id} blog={blog} isProfile={isUserProfile } />)}
     </section>
 
     <div className="flex justify-between mt-4">
