@@ -4,6 +4,7 @@ import { Input } from "./ui/input";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
+import { useDebounceValue } from "../../../hooks/useDebounceValue";
 
 
 const SearchInput = () => {
@@ -12,6 +13,7 @@ const SearchInput = () => {
   const title = params.get('title')
   const [value, setValue] = useState(title || '');
   const router = useRouter();
+  const debounceValue = useDebounceValue<string>(value);
 
 
   useEffect(() => {
@@ -21,9 +23,10 @@ const SearchInput = () => {
             currentQuery= queryString.parse(params.toString())
           }
     
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const updatedQuery: any = {
             ...currentQuery,
-            title : value
+            title : debounceValue
           }
     
           const url = queryString.stringifyUrl(
@@ -37,7 +40,8 @@ const SearchInput = () => {
             }
           )
           router.push(url)
-  },[value])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[debounceValue])
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value);

@@ -28,6 +28,7 @@ const Tag = ({ children,selected}: TagProps) => {
         currentQuery= queryString.parse(params.toString())
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const updatedQuery: any = {
         ...currentQuery,
         tag : children
