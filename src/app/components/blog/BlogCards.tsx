@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import React from 'react';
 import { BlogWithUser } from './ListBlogs';
@@ -6,7 +7,8 @@ import UserSummary from './UserSummary';
 import Tag from '../common/Tag';
 import Reactions from './Reactions';
 
-const BlogCards = ({blog,isUserProfile}:{blog:BlogWithUser,isProfile?:boolean}) => {
+// isUserProfile
+const BlogCards = ({blog}:{blog:BlogWithUser,isProfile?:boolean}) => {
   return (
     <div className='border-b border-slate-300 dark:border-slate-700 py-6 cursor-pointer '>
       <div>
