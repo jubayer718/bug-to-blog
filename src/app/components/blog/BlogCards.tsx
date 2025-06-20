@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React from 'react';
 import { BlogWithUser } from './ListBlogs';
 import Image from 'next/image';
-import { Divide } from 'lucide-react';
 import UserSummary from './UserSummary';
 import Tag from '../common/Tag';
 import Reactions from './Reactions';
