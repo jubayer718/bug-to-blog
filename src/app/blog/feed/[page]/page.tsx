@@ -6,7 +6,7 @@ import React from 'react';
 
 interface BlogFeedProps{
   params: Promise<{ page: string }>
-  searchParams:Promise<{tag:string}>
+  searchParams:Promise<{tag:string,title:string}>
 }
 const BlogFeed = async({ params,searchParams }:BlogFeedProps) => {
  

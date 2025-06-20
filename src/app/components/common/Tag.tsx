@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "@/lib/utils";
 import {  useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
 import React,{ useCallback } from "react";
@@ -6,11 +7,12 @@ import React,{ useCallback } from "react";
 
 interface TagProps{
   children: React.ReactNode,
+  selected?:boolean
  
 
 }
 
-const Tag = ({ children}: TagProps) => {
+const Tag = ({ children,selected}: TagProps) => {
   
   const router = useRouter();
   const params = useSearchParams();
@@ -37,7 +39,8 @@ const Tag = ({ children}: TagProps) => {
           query:updatedQuery
         },
         {
-          skipNull:true
+          skipNull: true,
+          skipEmptyString:true
         }
       )
       router.push(url)
@@ -45,7 +48,7 @@ const Tag = ({ children}: TagProps) => {
   },[children,params,router])
 
   return (
-    <span onClick={handleOnclick} className="bg-secondary px-2 py-1 rounded text-sm cursor-pointer">
+    <span onClick={handleOnclick} className={cn("bg-secondary px-2 py-1 rounded text-sm cursor-pointer",selected && "bg-primary text-secondary ")}>
       { children}      
    </span>
   );
