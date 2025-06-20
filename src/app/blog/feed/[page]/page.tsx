@@ -5,19 +5,21 @@ import React from 'react';
 
 
 interface BlogFeedProps{
-  params:Promise<{page:string}>
+  params: Promise<{ page: string }>
+  searchParams:Promise<{tag:string}>
 }
-const BlogFeed = async({ params }:BlogFeedProps) => {
+const BlogFeed = async({ params,searchParams }:BlogFeedProps) => {
  
   const { page } = await params
+
+  const searchObj = await searchParams;
   const currentPage = parseInt(page, 10) || 1
-  const {success,error } = await getPublishedBlogs({ page: currentPage, limit:5})
+  const {success,error } = await getPublishedBlogs({ page: currentPage, limit:5,searchObj})
   
   if (error) return <Alert error message='Error fetching blogs' />
   
   if (!success) return <Alert message='No blogs' />
   
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {blogs, hasMore} = success
 
   return (
